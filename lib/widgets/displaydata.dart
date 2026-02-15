@@ -1,35 +1,94 @@
 import 'package:flutter/material.dart';
-import 'package:rivoratechfe/services/data.dart';
-import 'package:rivoratechfe/services/profileservices.dart';
+import 'package:provider/provider.dart';
+import 'package:rivoratechfe/profileprovider/profile_provider.dart';
+import 'package:rivoratechfe/widgets/updatescreen.dart';
 
-class DisplaData extends StatelessWidget {
+class DisplaData extends StatefulWidget {
   DisplaData({super.key});
 
-  final service= Profileservices();
+  @override
+  State<DisplaData> createState() => _DisplaDataState();
+}
 
-  void deleteprofile(String id){
-    service.deleteProfile(id);
+class _DisplaDataState extends State<DisplaData> {
+  @override
+  void initState() {
+    super.initState();
+      Provider.of<ProfileProvider>(context, listen: false).fetchProfiles();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-      itemCount: profileInfo.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            tileColor: Colors.grey,
-            title: Text(profileInfo[index]['name']!),
-            subtitle: Text(profileInfo[index]['email']!),
-            leading: IconButton(onPressed: (){}, icon: Icon(Icons.edit)),
-            trailing: IconButton(onPressed:(){
-            }, icon: Icon(Icons.delete, color: Colors.red,),),
-          ),
-        );
-      },
-    ),
-    ); 
+      body: Consumer<ProfileProvider>(
+        builder: (context, provider, child) {
+          if (provider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (provider.profiles.isEmpty) {
+            return const Center(child: Text("No profiles found"));
+          }
+
+          return ListView.builder(
+            itemCount: provider.profiles.length,
+            itemBuilder: (context, index) {
+              final profile = provider.profiles[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  tileColor: Colors.grey,
+                  title: Text(profile.name),
+                  subtitle: Text(profile.email),
+                  leading: IconButton(
+                    onPressed: () async {
+                      print("Passing ID: ${profile.id}");
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdateScreen(profile: profile),
+                        ),
+                      );
+                    },
+                    icon: Icon(Icons.edit),
+                  ),
+                  trailing: IconButton(
+                    onPressed: () async {
+                      final confirm = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text("Delete Profile"),
+                          content: Text("Are you sure you want to delete ${profile.name}?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: Text("Cancel"),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              child: Text("Delete", style: TextStyle(color: Colors.red)),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      if (confirm == true) {
+                        await provider.deleteProfile(profile.id!);
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Profile deleted")),
+                          );
+                        }
+                      }
+                    },
+                    icon: Icon(Icons.delete, color: Colors.red),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }

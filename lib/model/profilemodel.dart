@@ -6,7 +6,7 @@ class Profilemodel {
   Profilemodel({required this.id, required this.name, required this.email});
 
   factory Profilemodel.fromJson(Map<String, dynamic> json) =>
-      Profilemodel(id: null, name: json['name'], email: json['email']);
+      Profilemodel(id: json['_id'], name: json['name'], email: json['email']);
       Map<String, dynamic> toJson()=>{
         "name":name,
         "email":email,

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rivoratechfe/mainpage.dart';
+import 'package:rivoratechfe/profileprovider/profile_provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context)=>ProfileProvider(),
+    child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

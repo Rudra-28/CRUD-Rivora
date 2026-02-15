@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rivoratechfe/model/profilemodel.dart';
+import 'package:rivoratechfe/profileprovider/profile_provider.dart';
 import 'package:rivoratechfe/services/profileservices.dart';
 
 class InputsPage extends StatefulWidget {
@@ -10,28 +12,36 @@ class InputsPage extends StatefulWidget {
 }
 
 class _InputsPageState extends State<InputsPage> {
-
-  final service= Profileservices();
+  final service = Profileservices();
 
   final TextEditingController namecontroller = TextEditingController();
   final TextEditingController emailcontroller = TextEditingController();
-  
+
   void addinfo() async {
-    await service.addProfile(Profilemodel(id: null, name: namecontroller.text, email: emailcontroller.text, ));
+    final provider = Provider.of<ProfileProvider>(context, listen: false);
+    await provider.addProfile(
+      Profilemodel(
+        id: null, 
+        name: namecontroller.text,
+        email: emailcontroller.text,
+      ),
+    );
     print("Data added to DB");
-      setState(() {
-        namecontroller.clear();
-        emailcontroller.clear();
-      });
-    }
-     @override
-     void dispose(){
-      namecontroller.dispose();
-      emailcontroller.dispose();
-      super.dispose();
-     }
-    @override
-    Widget build(BuildContext context) {
+    setState(() {
+      namecontroller.clear();
+      emailcontroller.clear();
+    });
+  }
+
+  @override
+  void dispose() {
+    namecontroller.dispose();
+    emailcontroller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
@@ -68,7 +78,9 @@ class _InputsPageState extends State<InputsPage> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextButton(
-              onPressed: addinfo, child: Text("Submit", style: TextStyle(color: Colors.white),)),
+              onPressed: addinfo,
+              child: Text("Submit", style: TextStyle(color: Colors.white)),
+            ),
           ),
         ),
         SizedBox(height: 10),
