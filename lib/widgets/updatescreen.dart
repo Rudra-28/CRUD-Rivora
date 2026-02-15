@@ -61,38 +61,47 @@ class _UpdateScreenState extends State<UpdateScreen> {
       appBar: AppBar(title: Text("Update your details")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Container(
-              width: 250,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10),
+        child: Center(
+          child: Column(
+            children: [
+              Container(
+                width: 250,
+                 height: 75,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(label: Text("Enter your name:")),
+                  ),
+                ),
               ),
-              child: TextField(
-                controller: nameController,
-                decoration: InputDecoration(label: Text("Enter your name:")),
+              SizedBox(height: 10),
+              Container(
+                 height: 75,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                width: 250,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(label: Text("Enter your email:")),
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: updatepro,
+                child: Text("Update"),
               ),
-              width: 250,
-              child: TextField(
-                controller: emailController,
-                decoration: InputDecoration(label: Text("Enter your email:")),
-              ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: updatepro,
-              child: Text("Update"),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

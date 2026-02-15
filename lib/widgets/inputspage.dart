@@ -21,7 +21,7 @@ class _InputsPageState extends State<InputsPage> {
     final provider = Provider.of<ProfileProvider>(context, listen: false);
     await provider.addProfile(
       Profilemodel(
-        id: null, 
+        id: null,
         name: namecontroller.text,
         email: emailcontroller.text,
       ),
@@ -46,26 +46,44 @@ class _InputsPageState extends State<InputsPage> {
       children: [
         Container(
           width: 250,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: TextField(
-            controller: namecontroller,
-            decoration: InputDecoration(label: Text("Enter your name:")),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: namecontroller,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.grey[400]),
+                fillColor: Colors.grey[900],
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+                label: Text("Enter your name:"),
+              ),
+            ),
           ),
         ),
         SizedBox(height: 10),
         Container(
+          height: 75,
           decoration: BoxDecoration(
-            color: Colors.blue,
             borderRadius: BorderRadius.circular(10),
           ),
           width: 250,
-          child: TextField(
-            controller: emailcontroller,
-            decoration: InputDecoration(label: Text("Enter your email:")),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: emailcontroller,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.grey[400]),
+                fillColor: Colors.grey[900],
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+                label: Text("Enter your email:"),
+              ),
+            ),
           ),
         ),
         SizedBox(height: 10),
@@ -74,12 +92,15 @@ class _InputsPageState extends State<InputsPage> {
           child: Container(
             width: 120,
             decoration: BoxDecoration(
-              color: Colors.green,
+              color: Colors.green[400],
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextButton(
+              
               onPressed: addinfo,
-              child: Text("Submit", style: TextStyle(color: Colors.white)),
+              child: Text("Submit", style: TextStyle(
+                fontSize: 20,
+                color: Colors.white)),
             ),
           ),
         ),
